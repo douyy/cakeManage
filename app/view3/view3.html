@@ -1,0 +1,164 @@
+<style>
+    h2{
+        font-size:30px;
+        text-align: center;
+    }
+    .head{
+        text-align: center;
+        overflow: hidden;
+        margin-left:20%;
+    }
+    .head p{
+        float: left;
+        margin-right:40px;
+    }
+    button{
+        border:0;
+        outline:none;
+    }
+    .head p button{
+        padding:7px;
+        color: #fff;
+        background-color: #7373b9;
+    }
+    .head p button.look{
+        -webkit-border-radius:15px;
+        -moz-border-radius:15px;
+        border-radius:15px;
+    }
+    .head p button.seach{
+        height:40px;
+        width:80px;
+    }
+    button{
+        background-color: #c7c7e2;
+    }
+    .head p input{
+        margin-left:10px;
+        width:300px;
+        height:28px;
+        border:1px solid #7373b9;
+        outline:none;
+        padding:5px;
+    }
+    .pltable td,.pltable th{
+        border-collapse:collapse;
+        border:1px solid #cccccc;
+        text-align: center;
+        cursor: pointer;
+    }
+    .pltable{
+        margin:0 auto;
+        margin-top:10px;
+    }
+    .pltable th{
+        padding:15px;
+    }
+    .pltable td{
+        padding:10px;
+    }
+    .pltable td div{
+        -ms-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        white-space:nowrap;
+        overflow: hidden;
+        width:120px;
+    }
+    .pltable td:hover{
+        background-color: #dddddd;
+    }
+    .detail{
+        width:350px;
+        background-color: #b8b8dc;
+        padding:20px;
+        -webkit-border-radius:20px;
+        -moz-border-radius:20px;
+        border-radius:20px;
+        position: absolute;
+        left:50%;
+        top:50%;
+        margin-left:-175px;
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        -o-transform: translateY(-50%);
+        transform: translateY(-50%);
+        position: relative;
+    }
+    .detail label{
+        color: black;
+    }
+    .detail p.con{
+        padding-left:30px;
+    }
+    .detail p{
+        color: #fff;
+    }
+    .detail label{
+        color: #b87070;
+    }
+
+    .detail .close{
+        position: absolute;
+        top:10px;
+        right:20px;
+        font-size:20px;
+        cursor: pointer;
+    }
+    .detail .reply{
+        position: absolute;
+        right:30px;
+        bottom:20px;
+    }
+</style>
+<h2>顾客评论管理</h2>
+<div class="head">
+    <p><button class="look" ng-click="all()">查看所有评论</button></p>
+    <p><input type="text" placeholder="请输入手机号/订单号"
+              ng-model="sphone"><button class="seach" ng-click="seach(sphone)">搜索</button>
+    </p>
+</div>
+<table class="pltable" ng-show="alls">
+    <thead>
+        <th>手机号/订单号</th>
+        <th>姓名</th>
+        <th>评论内容</th>
+        <th>评论分数</th>
+        <th>评论时间</th>
+        <th>操作</th>
+    </thead>
+    <tbody>
+        <tr ng-repeat="talk in talks | filter:{phone:sphone} | filter:{phone:phone}">
+            <td><div>{{talk.phone}}</div></td>
+            <td><div>{{talk.name}}</div></td>
+            <td><div>{{talk.content}}</div></td>
+            <td><div>{{talk.score}}</div></td>
+            <td><div>{{talk.time}}</div></td>
+            <td>
+                <button ng-click="look(talk)">查看详情</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="detail" ng-show="detail != null">
+    <p><label>手机号/订单号：</label>{{detail.phone}}</p>
+    <p><label>姓名：</label>{{detail.name}}</p>
+    <p><label>评分：</label>{{detail.score}}</p>
+    <p><label>时间：</label>{{detail.time}}</p>
+    <label>评论内容：</label>
+    <p class="con">{{detail.content}}</p>
+
+    <div ng-show="detail.reply != null">
+        <label>回复内容：</label>
+        <p class="con">{{detail.reply}}</p>
+    </div>
+    <!--评论回复-->
+    <div ng-show="rep">
+        <p><textarea cols="38" rows="10" ng-model="txt">在此回复评论</textarea></p>
+        <button ng-click="send(detail.phone,txt)">发送评论</button>
+    </div>
+    <button ng-click="reply()" class="reply">回复评论</button>
+    <span class="close" ng-click="look(null)">×</span>
+    {{text}}
+</div>
